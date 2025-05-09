@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS `tournaments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `game_id` int(11) NOT NULL,
+  `banner` varchar(255) DEFAULT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `registration_start` datetime NOT NULL,
+  `registration_end` datetime NOT NULL,
+  `team_limit` int(11) NOT NULL DEFAULT 16,
+  `prize_pool` decimal(10,2) DEFAULT 0.00,
+  `format` enum('single_elimination','double_elimination','round_robin','swiss') NOT NULL,
+  `rules` text DEFAULT NULL,
+  `status` enum('draft','registration','active','completed','cancelled') NOT NULL DEFAULT 'draft',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`),
+  KEY `game_id` (`game_id`),
+  CONSTRAINT `tournaments_game_id_fk` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

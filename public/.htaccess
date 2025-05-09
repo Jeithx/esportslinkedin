@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Dosya veya dizin yok ise
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# İsteği index.php'ye yönlendir
+RewriteRule . index.php [L]
