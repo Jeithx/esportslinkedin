@@ -1,30 +1,30 @@
-<div class="auth-container">
-    <div class="auth-card">
-        <h2>Giriş Yap</h2>
+<div class="max-w-md mx-auto my-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">Giriş Yap</h2>
         
         <form action="<?= url('/login/submit') ?>" method="post">
-            <div class="form-group">
-                <label for="username">Kullanıcı Adı veya E-posta:</label>
-                <input type="text" name="username" id="username" class="form-control" required>
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 font-medium mb-2">Kullanıcı Adı veya E-posta:</label>
+                <input type="text" name="username" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
             </div>
             
-            <div class="form-group">
-                <label for="password">Şifre:</label>
-                <div class="password-input-container">
-                    <input type="password" name="password" id="password" class="form-control" required>
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password')">
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 font-medium mb-2">Şifre:</label>
+                <div class="relative">
+                    <input type="password" name="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordVisibility('password')">
                         <i class="fa fa-eye"></i>
                     </button>
                 </div>
             </div>
             
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Giriş Yap</button>
+            <div class="mb-4">
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">Giriş Yap</button>
             </div>
         </form>
         
-        <div class="auth-links">
-            <p>Hesabınız yok mu? <a href="<?= url('/register') ?>">Kayıt Ol</a></p>
+        <div class="text-center text-gray-600">
+            <p>Hesabınız yok mu? <a href="<?= url('/register') ?>" class="text-indigo-600 hover:underline">Kayıt Ol</a></p>
         </div>
     </div>
 </div>

@@ -2,10 +2,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Mobil menü açma/kapatma
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    if (mobileMenuToggle) {
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    if (mobileMenuToggle && mobileMenu) {
         mobileMenuToggle.addEventListener('click', function() {
-            const nav = document.querySelector('nav');
-            nav.classList.toggle('active');
+            mobileMenu.classList.toggle('hidden');
         });
     }
     

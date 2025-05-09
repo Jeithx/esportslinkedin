@@ -42,6 +42,8 @@ $router->add('/admin/update-user-role', 'AdminController', 'updateUserRole', 'PO
 $router->add('/admin/approve-registration', 'AdminController', 'approveRegistration', 'POST');
 $router->add('/admin/reject-registration', 'AdminController', 'rejectRegistration', 'POST');
 $router->add('/admin/tournaments/edit', 'AdminController', 'editTournament', 'GET');
+$router->add('/admin/update-tournament', 'AdminController', 'updateTournament', 'POST');
+
 
 
 // Test rotası - ihtiyaç yoksa kaldırılabilir

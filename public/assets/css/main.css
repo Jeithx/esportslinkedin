@@ -1,13 +1,14 @@
 /* Ana Stiller */
 :root {
-    --primary-color: #6a3de8;
-    --secondary-color: #ff3e00;
-    --dark-color: #1a1a2e;
-    --light-color: #f9f9f9;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --info-color: #17a2b8;
+    --primary-color: #4f46e5; /* indigo-600 */
+    --primary-dark: #4338ca; /* indigo-700 */
+    --secondary-color: #ec4899; /* pink-500 */
+    --dark-color: #1e1b4b; /* indigo-950 */
+    --light-color: #f9fafb; /* gray-50 */
+    --success-color: #10b981; /* emerald-500 */
+    --warning-color: #f59e0b; /* amber-500 */
+    --danger-color: #ef4444; /* red-500 */
+    --info-color: #06b6d4; /* cyan-500 */
 }
 
 * {
@@ -17,11 +18,11 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     color: #333;
-    background-color: #f4f4f4;
+    background-color: #f3f4f6; /* gray-100 */
 }
 
 .container {

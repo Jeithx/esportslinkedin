@@ -1,106 +1,50 @@
-<div class="auth-container">
-    <div class="auth-card">
-        <h2>Kayıt Ol</h2>
+<div class="max-w-md mx-auto my-8">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">Kayıt Ol</h2>
         
         <form action="<?= url('/register/submit') ?>" method="post">
-            <div class="form-group">
-                <label for="username">Kullanıcı Adı:</label>
-                <input type="text" name="username" id="username" class="form-control" required>
-                <small class="form-text text-muted">En az 3 karakter, özel karakter içermemeli</small>
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 font-medium mb-2">Kullanıcı Adı:</label>
+                <input type="text" name="username" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                <small class="text-gray-500 text-sm mt-1 block">En az 3 karakter, özel karakter içermemeli</small>
             </div>
             
-            <div class="form-group">
-                <label for="email">E-posta:</label>
-                <input type="email" name="email" id="email" class="form-control" required>
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-medium mb-2">E-posta:</label>
+                <input type="email" name="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
             </div>
             
-            <div class="form-group">
-                <label for="password">Şifre:</label>
-                <div class="password-input-container">
-                    <input type="password" name="password" id="password" class="form-control" required>
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password')">
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 font-medium mb-2">Şifre:</label>
+                <div class="relative">
+                    <input type="password" name="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordVisibility('password')">
                         <i class="fa fa-eye"></i>
                     </button>
                 </div>
-                <small class="form-text text-muted">En az 6 karakter</small>
+                <small class="text-gray-500 text-sm mt-1 block">En az 6 karakter</small>
             </div>
             
-            <div class="form-group">
-                <label for="password_confirm">Şifre Tekrar:</label>
-                <div class="password-input-container">
-                    <input type="password" name="password_confirm" id="password_confirm" class="form-control" required>
-                    <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password_confirm')">
+            <div class="mb-6">
+                <label for="password_confirm" class="block text-gray-700 font-medium mb-2">Şifre Tekrar:</label>
+                <div class="relative">
+                    <input type="password" name="password_confirm" id="password_confirm" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" onclick="togglePasswordVisibility('password_confirm')">
                         <i class="fa fa-eye"></i>
                     </button>
                 </div>
             </div>
             
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Kayıt Ol</button>
+            <div class="mb-4">
+                <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-indigo-700 transition duration-300">Kayıt Ol</button>
             </div>
         </form>
         
-        <div class="auth-links">
-            <p>Zaten hesabınız var mı? <a href="<?= url('/login') ?>">Giriş Yap</a></p>
+        <div class="text-center text-gray-600">
+            <p>Zaten hesabınız var mı? <a href="<?= url('/login') ?>" class="text-indigo-600 hover:underline">Giriş Yap</a></p>
         </div>
     </div>
 </div>
-
-<style>
-.auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-}
-
-.auth-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    width: 100%;
-    max-width: 400px;
-}
-
-.auth-card h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-}
-
-.btn-block {
-    width: 100%;
-}
-
-.auth-links {
-    text-align: center;
-    margin-top: 1.5rem;
-}
-
-.password-input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-toggle-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    padding: 0;
-    font-size: 16px;
-}
-
-.password-toggle-btn:focus {
-    outline: none;
-}
-</style>
 
 <script>
 function togglePasswordVisibility(inputId) {
