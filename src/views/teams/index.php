@@ -1,59 +1,57 @@
-<div class="page-header">
-    <h1>Takımlar</h1>
-    <p>Tüm kayıtlı takımlar</p>
+<div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Takımlar</h1>
+            <p class="text-gray-600">Boscaler Esports'un profesyonel takımlarına göz atın veya kendi takımınızı oluşturun.</p>
+        </div>
+        
+        <?php if (Auth::isLoggedIn()): ?>
+            <a href="<?= url('/teams/create') ?>" class="mt-4 md:mt-0 inline-flex items-center px-5 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Yeni Takım Oluştur
+            </a>
+        <?php else: ?>
+            <a href="<?= url('/login') ?>" class="mt-4 md:mt-0 inline-flex items-center px-5 py-3 bg-indigo-100 text-indigo-600 font-medium rounded-lg hover:bg-indigo-200 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Giriş Yap ve Takım Kur
+            </a>
+        <?php endif; ?>
+    </div>
 </div>
 
-<?php if (Auth::isLoggedIn()): ?>
-    <div class="create-team-section">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTeamModal">
-            Yeni Takım Oluştur
-        </button>
-    </div>
-    
-    <!-- Takım Oluşturma Modal -->
-    <div class="modal" id="createTeamModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Yeni Takım Oluştur</h4>
-                    <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-                </div>
-                
-                <div class="modal-body">
-                    <form action="<?= url('/teams/create') ?>" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="name">Takım Adı:</label>
-                            <input type="text" name="name" id="name" class="form-control" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="description">Takım Açıklaması:</label>
-                            <textarea name="description" id="description" class="form-control" rows="3"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="logo">Takım Logosu:</label>
-                            <input type="file" name="logo" id="logo" class="form-control-file" accept="image/*">
-                            <small class="form-text text-muted">Önerilen: 500x500 piksel, PNG veya JPG formatında</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Takımı Oluştur</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php endif; ?>
-
 <?php if (empty($teams)): ?>
-    <div class="alert alert-info">Henüz kayıtlı takım bulunmamaktadır.</div>
+    <div class="bg-white rounded-xl shadow-md p-12 text-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <h3 class="text-xl font-medium text-gray-800 mb-2">Henüz kayıtlı takım bulunmamaktadır</h3>
+        <p class="text-gray-600 mb-6">İlk takımı oluşturmak için harekete geçin ve e-spor sahnesinde yerinizi alın!</p>
+        
+        <?php if (Auth::isLoggedIn()): ?>
+            <a href="<?= url('/teams/create') ?>" class="inline-flex items-center px-5 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                İlk Takımı Oluştur
+            </a>
+        <?php else: ?>
+            <a href="<?= url('/login') ?>" class="inline-flex items-center px-5 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                Giriş Yap
+            </a>
+        <?php endif; ?>
+    </div>
 <?php else: ?>
-    <div class="team-grid">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <?php foreach ($teams as $team): ?>
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div class="p-6 flex items-center justify-center bg-gray-50">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                <div class="p-6 flex items-center justify-center bg-gray-50 h-48">
                     <?php if (!empty($team['logo'])): ?>
                         <img src="<?= url('/uploads/team_logos/' . $team['logo']) ?>" alt="<?= escape($team['name']) ?> Logo" class="h-32 w-32 object-contain">
                     <?php else: ?>
@@ -75,3 +73,12 @@
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
+
+<style>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

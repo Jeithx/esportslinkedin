@@ -119,97 +119,130 @@ class TeamController {
         view('layouts/main', ['content' => $content]);
     }
     
-    // Yeni takım oluşturma
-    public function create() {
-        global $database;
+    // TeamController sınıfına şu metodu ekleyin:
+
+// Takım oluşturma formu
+public function createForm() {
+    // Kullanıcı girişi kontrolü
+    Auth::requireLogin();
+    
+    // Görünüm verilerini hazırla
+    $data = [
+        'pageTitle' => 'Takım Oluştur',
+        'cssFiles' => ['teams.css']
+    ];
+    
+    // Takım oluşturma formunu göster
+    ob_start();
+    view('teams/create', $data);
+    $content = ob_get_clean();
+    
+    view('layouts/main', ['content' => $content]);
+}
+
+// Mevcut create metodunu POST işlemi için güncelle
+public function create() {
+    global $database;
+    
+    // Kullanıcı girişi kontrolü
+    Auth::requireLogin();
+    
+    // POST verilerini al
+    $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+    $description = isset($_POST['description']) ? trim($_POST['description']) : '';
+    $mainGame = isset($_POST['main_game']) ? trim($_POST['main_game']) : '';
+    $discord = isset($_POST['discord']) ? trim($_POST['discord']) : '';
+    
+    // Form doğrulama
+    $validation = new Validation($_POST);
+    $validation->required('name', 'Takım adı gereklidir.')
+               ->minLength('name', 3, 'Takım adı en az 3 karakter olmalıdır.')
+               ->maxLength('name', 50, 'Takım adı en fazla 50 karakter olmalıdır.');
+    
+    if ($validation->fails()) {
+        Session::setFlash('error', $validation->getFirstError());
+        redirect('teams/create');
+        return;
+    }
+    
+    // Takım adının benzersiz olup olmadığını kontrol et
+    $existingTeam = $database->fetch(
+        "SELECT * FROM teams WHERE name = ?",
+        [$name]
+    );
+    
+    if ($existingTeam) {
+        Session::setFlash('error', 'Bu takım adı zaten kullanılıyor.');
+        redirect('teams/create');
+        return;
+    }
+    
+    // Slug oluştur
+    $slug = strtolower(str_replace(' ', '-', $name));
+    $slug = preg_replace('/[^a-z0-9\-]/', '', $slug);
+    
+    // Takım logosu yükleme (varsa)
+    $logo = '';
+    if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
+        $logoTmpName = $_FILES['logo']['tmp_name'];
+        $logoName = $_FILES['logo']['name'];
+        $logoExt = strtolower(pathinfo($logoName, PATHINFO_EXTENSION));
         
-        // Kullanıcı girişi kontrolü
-        Auth::requireLogin();
+        // İzin verilen uzantılar
+        $allowedExt = ['jpg', 'jpeg', 'png', 'gif'];
         
-        // POST verilerini al
-        $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-        $description = isset($_POST['description']) ? trim($_POST['description']) : '';
-        
-        // Form doğrulama
-        $validation = new Validation($_POST);
-        $validation->required('name', 'Takım adı gereklidir.')
-                   ->minLength('name', 3, 'Takım adı en az 3 karakter olmalıdır.')
-                   ->maxLength('name', 50, 'Takım adı en fazla 50 karakter olmalıdır.');
-        
-        if ($validation->fails()) {
-            Session::setFlash('error', $validation->getFirstError());
-            redirect('teams');
-            return;
-        }
-        
-        // Takım adının benzersiz olup olmadığını kontrol et
-        $existingTeam = $database->fetch(
-            "SELECT * FROM teams WHERE name = ?",
-            [$name]
-        );
-        
-        if ($existingTeam) {
-            Session::setFlash('error', 'Bu takım adı zaten kullanılıyor.');
-            redirect('teams');
-            return;
-        }
-        
-        // Slug oluştur
-        $slug = strtolower(str_replace(' ', '-', $name));
-        $slug = preg_replace('/[^a-z0-9\-]/', '', $slug);
-        
-        // Takım logosu yükleme (varsa)
-        $logo = '';
-        if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
-            $logoTmpName = $_FILES['logo']['tmp_name'];
-            $logoName = $_FILES['logo']['name'];
-            $logoExt = strtolower(pathinfo($logoName, PATHINFO_EXTENSION));
+        if (in_array($logoExt, $allowedExt)) {
+            $logoNewName = $slug . '-' . time() . '.' . $logoExt;
+            $uploadPath = ROOT_PATH . '/public/uploads/team_logos/';
             
-            // İzin verilen uzantılar
-            $allowedExt = ['jpg', 'jpeg', 'png', 'gif'];
+            // Klasör yoksa oluştur
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
             
-            if (in_array($logoExt, $allowedExt)) {
-                $logoNewName = $slug . '-' . time() . '.' . $logoExt;
-                $uploadPath = ROOT_PATH . '/public/uploads/team_logos/';
-                
-                // Klasör yoksa oluştur
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0777, true);
-                }
-                
-                if (move_uploaded_file($logoTmpName, $uploadPath . $logoNewName)) {
-                    $logo = $logoNewName;
-                }
+            if (move_uploaded_file($logoTmpName, $uploadPath . $logoNewName)) {
+                $logo = $logoNewName;
             }
         }
-        
-        // Kullanıcı ID'sini al
-        $userId = Session::get('user_id');
-        
-        // Takımı oluştur
-        $teamId = $database->insert('teams', [
-            'name' => $name,
-            'slug' => $slug,
-            'description' => $description,
-            'logo' => $logo,
-            'owner_id' => $userId
+    }
+    
+    // Kullanıcı ID'sini al
+    $userId = Session::get('user_id');
+    
+    // Ana oyun bilgisini açıklamaya ekle
+    if (!empty($mainGame)) {
+        $description .= "\n\nAna Oyun: " . strtoupper($mainGame);
+    }
+    
+    // Discord bilgisini açıklamaya ekle
+    if (!empty($discord)) {
+        $description .= "\n\nDiscord: " . $discord;
+    }
+    
+    // Takımı oluştur
+    $teamId = $database->insert('teams', [
+        'name' => $name,
+        'slug' => $slug,
+        'description' => $description,
+        'logo' => $logo,
+        'owner_id' => $userId
+    ]);
+    
+    if ($teamId) {
+        // Kullanıcıyı takım kaptanı olarak ekle
+        $database->insert('team_members', [
+            'team_id' => $teamId,
+            'user_id' => $userId,
+            'role' => 'captain'
         ]);
         
-        if ($teamId) {
-            // Kullanıcıyı takım kaptanı olarak ekle
-            $database->insert('team_members', [
-                'team_id' => $teamId,
-                'user_id' => $userId,
-                'role' => 'captain'
-            ]);
-            
-            Session::setFlash('success', 'Takım başarıyla oluşturuldu.');
-            redirect('teams/view?id=' . $teamId);
-        } else {
-            Session::setFlash('error', 'Takım oluşturulurken bir hata oluştu.');
-            redirect('teams');
-        }
+        Session::setFlash('success', 'Takım başarıyla oluşturuldu.');
+        redirect('teams/view?id=' . $teamId);
+    } else {
+        Session::setFlash('error', 'Takım oluşturulurken bir hata oluştu.');
+        redirect('teams/create');
     }
+}
 
     // Takıma üye davet etme
     public function invite() {

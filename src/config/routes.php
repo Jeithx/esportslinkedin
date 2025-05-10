@@ -24,6 +24,8 @@ $router->add('/logout', 'UserController', 'logout', 'GET');
 $router->add('/profile', 'UserController', 'profile', 'GET');
 $router->add('/profile/update', 'UserController', 'updateProfile', 'POST');
 $router->add('/teams/invite', 'TeamController', 'invite', 'POST');
+$router->add('/teams/create', 'TeamController', 'createForm', 'GET');
+$router->add('/teams/create/submit', 'TeamController', 'create', 'POST');
 
 
 

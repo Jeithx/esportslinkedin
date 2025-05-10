@@ -82,37 +82,57 @@
         </div>
       <?php else: ?>
         <?php foreach ($latestTournaments as $tournament): ?>
-          <div class="group relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-            <div class="h-48 bg-gradient-to-r from-indigo-500 to-purple-600 relative overflow-hidden">
-              <?php if (!empty($tournament['banner'])): ?>
-                <img src="<?= url('/uploads/tournament_banners/' . $tournament['banner']) ?>" alt="<?= escape($tournament['name']) ?>" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-              <?php endif; ?>
-              <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-              <div class="absolute bottom-0 left-0 right-0 p-4">
-                <div class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-white bg-pink-500">
-                  <?= escape($tournament['game_name']) ?>
-                </div>
-                <h3 class="text-xl font-bold text-white mt-2"><?= escape($tournament['name']) ?></h3>
+        <div class="group relative bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+          <div class="h-48 bg-gradient-to-r 
+            <?php 
+            $gradients = [
+              1 => 'from-blue-500 to-blue-700',  // League of Legends
+              2 => 'from-red-500 to-red-700',     // Valorant
+              3 => 'from-gray-700 to-gray-900',   // CS2
+              4 => 'from-yellow-400 to-yellow-600' // R6
+            ];
+            echo isset($gradients[$tournament['game_id']]) ? $gradients[$tournament['game_id']] : 'from-indigo-500 to-purple-600';
+            ?> 
+            relative overflow-hidden">
+            <?php if (!empty($tournament['banner'])): ?>
+              <img src="<?= url('/uploads/tournament_banners/' . $tournament['banner']) ?>" alt="<?= escape($tournament['name']) ?>" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+            <?php else: ?>
+              <!-- Oyun logosunu göstermeye çalış, eğer yoksa varsayılan görsel göster -->
+              <div class="absolute inset-0 flex items-center justify-center">
+                <?php if (isset($tournament['game_slug'])): ?>
+                  <img src="<?= url('/assets/images/games/' . strtolower($tournament['game_slug']) . '.png') ?>" 
+                      alt="<?= escape($tournament['game_name']) ?>" 
+                      class="w-24 h-24 opacity-30"
+                      onerror="this.style.display='none'">
+                <?php endif; ?>
               </div>
-            </div>
-            <div class="p-6">
-              <div class="flex items-center text-gray-700 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <span class="font-medium"><?= format_date($tournament['start_date']) ?></span>
+            <?php endif; ?>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <div class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded text-white bg-pink-500">
+                <?= escape($tournament['game_name']) ?>
               </div>
-              <div class="flex items-center text-gray-700 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="font-medium"><?= format_money($tournament['prize_pool']) ?></span>
-              </div>
-              <a href="<?= url('/tournaments/view?id=' . $tournament['id']) ?>" class="block w-full text-center py-3 bg-indigo-50 text-indigo-600 font-medium rounded-lg hover:bg-indigo-600 hover:text-white transition-colors duration-300">
-                Detayları Görüntüle
-              </a>
+              <h3 class="text-xl font-bold text-white mt-2"><?= escape($tournament['name']) ?></h3>
             </div>
           </div>
+          <div class="p-6">
+            <div class="flex items-center text-gray-700 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span class="font-medium"><?= format_date($tournament['start_date']) ?></span>
+            </div>
+            <div class="flex items-center text-gray-700 mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="font-medium"><?= format_money($tournament['prize_pool']) ?></span>
+            </div>
+            <a href="<?= url('/tournaments/view?id=' . $tournament['id']) ?>" class="block w-full text-center py-3 bg-indigo-50 text-indigo-600 font-medium rounded-lg hover:bg-indigo-600 hover:text-white transition-colors duration-300">
+              Detayları Görüntüle
+            </a>
+          </div>
+        </div>
         <?php endforeach; ?>
       <?php endif; ?>
     </div>
@@ -152,9 +172,9 @@
              onerror="this.onerror=null; this.src='https://via.placeholder.com/80/1F2937/ffffff?text=CS2';">
         <h3 class="font-bold text-xl">Counter-Strike 2</h3>
       </div>
-      <div class="bg-gradient-to-br from-orange-500 to-orange-700 rounded-xl shadow-lg p-6 text-center text-white hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+      <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl shadow-lg p-6 text-center text-black hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
         <img src="<?= url('/assets/images/games/r6.png') ?>" alt="Rainbow Six Siege" class="w-20 h-20 mx-auto mb-4"
-             onerror="this.onerror=null; this.src='https://via.placeholder.com/80/F59E0B/ffffff?text=R6';">
+            onerror="this.onerror=null; this.src='https://via.placeholder.com/80/F59E0B/000000?text=R6';">
         <h3 class="font-bold text-xl">Rainbow Six Siege</h3>
       </div>
     </div>
@@ -309,7 +329,7 @@
   </div>
 </div>
 
-<!-- Sponsorlar -->
+<!-- Sponsorlar
 <div class="py-12 bg-gray-100">
   <div class="container mx-auto px-6">
     <div class="text-center mb-8">
@@ -326,7 +346,7 @@
            onerror="this.onerror=null; this.src='https://via.placeholder.com/160x60/6B7280/ffffff?text=SPONSOR+4';">
     </div>
   </div>
-</div>
+</div> -->
 
 <style>
 @keyframes blob {
