@@ -14,6 +14,18 @@ $router->add('/tournaments/register', 'TournamentController', 'register', 'POST'
 $router->add('/teams', 'TeamController', 'index', 'GET');
 $router->add('/teams/view', 'TeamController', 'view', 'GET');
 $router->add('/teams/create', 'TeamController', 'create', 'POST');
+$router->add('/teams/pending-invitations', 'TeamController', 'pendingInvitations', 'GET');
+$router->add('/teams/invite', 'TeamController', 'invite', 'POST');
+$router->add('/teams/create', 'TeamController', 'createForm', 'GET');
+$router->add('/teams/create/submit', 'TeamController', 'create', 'POST');
+
+// Takım davetleri için rotalar
+$router->add('/teams/invitations', 'TeamController', 'myInvitations', 'GET');
+$router->add('/teams/accept-invitation', 'TeamController', 'acceptInvitation', 'GET');
+$router->add('/teams/reject-invitation', 'TeamController', 'rejectInvitation', 'POST');
+$router->add('/teams/join', 'TeamController', 'join', 'GET');
+$router->add('/teams/cancel-invitation', 'TeamController', 'cancelInvitation', 'POST');
+
 
 // Kullanıcılar
 $router->add('/register', 'UserController', 'register', 'GET');
@@ -23,9 +35,7 @@ $router->add('/login/submit', 'UserController', 'loginSubmit', 'POST');
 $router->add('/logout', 'UserController', 'logout', 'GET');
 $router->add('/profile', 'UserController', 'profile', 'GET');
 $router->add('/profile/update', 'UserController', 'updateProfile', 'POST');
-$router->add('/teams/invite', 'TeamController', 'invite', 'POST');
-$router->add('/teams/create', 'TeamController', 'createForm', 'GET');
-$router->add('/teams/create/submit', 'TeamController', 'create', 'POST');
+
 
 
 

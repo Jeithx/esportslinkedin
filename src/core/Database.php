@@ -7,9 +7,14 @@ class Database {
     }
     // Tablo var mı kontrol etme
     public function tableExists($table) {
-        $query = $this->pdo->prepare("SHOW TABLES LIKE ?");
-        $query->execute([$table]);
-        return $query->rowCount() > 0;
+        try {
+            // Doğrudan tablo adıyla sorgu yapmayı deneyin
+            $result = $this->pdo->query("SHOW TABLES LIKE '{$table}'");
+            return $result && $result->rowCount() > 0;
+        } catch (PDOException $e) {
+            // Hata durumunda false döndür
+            return false;
+        }
     }
     
     // Sorgu çalıştırma ve sonuçları getirme
@@ -83,5 +88,19 @@ class Database {
         $query = "DELETE FROM {$table} WHERE {$where}";
         
         return $this->execute($query, $params);
+    }
+
+    public function beginTransaction() {
+        return $this->pdo->beginTransaction();
+    }
+
+    // Transaction tamamlama
+    public function commit() {
+        return $this->pdo->commit();
+    }
+
+    // Transaction geri alma
+    public function rollback() {
+        return $this->pdo->rollBack();
     }
 }

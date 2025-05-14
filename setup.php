@@ -60,7 +60,8 @@ try {
             'tournaments.sql',
             'tournament_teams.sql',
             'matches.sql',
-            'team_invitations.sql'
+            'team_invitations.sql',
+            'player_search.sql'
         ];
 
         echo "<h2>Tabloları Oluşturma</h2>";

@@ -164,81 +164,79 @@ class UserController {
     }
    
 
-// Profil sayfası
-// Profil sayfası
-public function profile() {
-    global $database;
-    
-    // Kullanıcı girişi kontrolü
-    Auth::requireLogin();
-    
-    // Kullanıcı bilgilerini getir
-    $userId = Session::get('user_id');
-    $user = $database->fetch(
-        "SELECT * FROM users WHERE id = ?",
-        [$userId]
-    );
-    
-    // Kullanıcının takımlarını getir
-    $teams = $database->fetchAll(
-        "SELECT t.*, tm.role as team_role
-        FROM teams t
-        JOIN team_members tm ON t.id = tm.team_id
-        WHERE tm.user_id = ?
-        ORDER BY t.name ASC",
-        [$userId]
-    );
-    
-    // Kullanıcının turnuvalarını getir (takımları üzerinden)
-    $tournaments = $database->fetchAll(
-        "SELECT DISTINCT t.*, g.name as game_name, g.slug as game_slug
-        FROM tournaments t
-        JOIN tournament_teams tt ON t.id = tt.tournament_id
-        JOIN teams tm ON tt.team_id = tm.id
-        JOIN team_members tmu ON tm.id = tmu.team_id
-        JOIN games g ON t.game_id = g.id
-        WHERE tmu.user_id = ?
-        ORDER BY t.start_date DESC",
-        [$userId]
-    );
-    
-    // Bekleyen davetleri kontrol et
-    $pendingInvitationCount = 0;
-    
-    // team_invitations tablosu var mı kontrol et (yeni metodu kullanarak)
-    try {
-        $userEmail = Session::get('user_email');
-        
-        // Database sınıfındaki yeni metodu kullanın
-        if ($database->tableExists('team_invitations')) {
-            $pendingInvitations = $database->fetch(
-                "SELECT COUNT(*) as count FROM team_invitations 
-                WHERE recipient_email = ? AND status = 'pending' AND expires_at > NOW()",
-                [$userEmail]
+
+    // Profil sayfası
+    // src/controllers/UserController.php dosyasındaki profile() metodu
+
+        public function profile() {
+            global $database;
+            
+            // Kullanıcı girişi kontrolü
+            Auth::requireLogin();
+            
+            // Kullanıcı bilgilerini getir
+            $userId = Session::get('user_id');
+            $user = $database->fetch(
+                "SELECT * FROM users WHERE id = ?",
+                [$userId]
             );
             
-            $pendingInvitationCount = $pendingInvitations ? $pendingInvitations['count'] : 0;
+            // Kullanıcının takımlarını getir
+            $teams = $database->fetchAll(
+                "SELECT t.*, tm.role as team_role
+                FROM teams t
+                JOIN team_members tm ON t.id = tm.team_id
+                WHERE tm.user_id = ?
+                ORDER BY t.name ASC",
+                [$userId]
+            );
+            
+            // Kullanıcının turnuvalarını getir (takımları üzerinden)
+            $tournaments = $database->fetchAll(
+                "SELECT DISTINCT t.*, g.name as game_name, g.slug as game_slug
+                FROM tournaments t
+                JOIN tournament_teams tt ON t.id = tt.tournament_id
+                JOIN teams tm ON tt.team_id = tm.id
+                JOIN team_members tmu ON tm.id = tmu.team_id
+                JOIN games g ON t.game_id = g.id
+                WHERE tmu.user_id = ?
+                ORDER BY t.start_date DESC",
+                [$userId]
+            );
+            
+            // Bekleyen davetleri kontrol et
+            $pendingInvitationCount = 0;
+            
+            // Kullanıcının e-posta adresini al
+            $userEmail = Session::get('user_email');
+            
+            // Bekleyen davetleri sorgula
+            if ($database->tableExists('team_invitations')) {
+                $pendingInvitations = $database->fetch(
+                    "SELECT COUNT(*) as count FROM team_invitations 
+                    WHERE recipient_email = ? AND status = 'pending' AND expires_at > NOW()",
+                    [$userEmail]
+                );
+                
+                $pendingInvitationCount = $pendingInvitations ? $pendingInvitations['count'] : 0;
+            }
+            
+            // Görünüm verilerini hazırla
+            $data = [
+                'pageTitle' => 'Profilim',
+                'user' => $user,
+                'teams' => $teams,
+                'tournaments' => $tournaments,
+                'pendingInvitationCount' => $pendingInvitationCount
+            ];
+            
+            // Profil görünümünü göster
+            ob_start();
+            view('users/profile', $data);
+            $content = ob_get_clean();
+            
+            view('layouts/main', ['content' => $content]);
         }
-    } catch (Exception $e) {
-        // Hata durumunda sessizce devam et
-    }
-    
-    // Görünüm verilerini hazırla
-    $data = [
-        'pageTitle' => 'Profilim',
-        'user' => $user,
-        'teams' => $teams,
-        'tournaments' => $tournaments,
-        'pendingInvitationCount' => $pendingInvitationCount
-    ];
-    
-    // Profil görünümünü göster
-    ob_start();
-    view('users/profile', $data);
-    $content = ob_get_clean();
-    
-    view('layouts/main', ['content' => $content]);
-}
 
 // Profil güncelleme
 public function updateProfile() {

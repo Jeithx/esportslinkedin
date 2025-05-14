@@ -467,7 +467,7 @@ public function acceptInvitation() {
     }
     
     // Transaction başlat
-    $database->pdo->beginTransaction();
+    $database->beginTransaction();
     
     try {
         // Takıma üye olarak ekle
@@ -484,7 +484,7 @@ public function acceptInvitation() {
         );
         
         if ($memberResult && $invitationResult) {
-            $database->pdo->commit();
+            $database->commit();
             Session::setFlash('success', $team['name'] . ' takımına başarıyla katıldınız.');
         } else {
             throw new Exception('İşlem sırasında bir hata oluştu.');

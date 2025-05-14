@@ -73,9 +73,8 @@
                 //     WHERE recipient_email = ? AND status = 'pending' AND expires_at > NOW()",
                 //     [$userEmail]
                 // );
-                
-                // $invitationCount = $pendingInvitations ? $pendingInvitations['count'] : 0;
-                
+
+                // $pendingInvitationCount = $pendingInvitations ? $pendingInvitations['count'] : 0;
                 if ($pendingInvitationCount > 0):
                 ?>
                     <div class="mt-4 bg-blue-50 text-blue-800 p-3 rounded-lg text-sm flex items-center">
@@ -83,7 +82,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                         <div>
-                            <span class="font-semibold"><?= $invitationCount ?> bekleyen takım davetiniz</span> var.
+                            <span class="font-semibold"><?= $pendingInvitationCount ?> bekleyen takım davetiniz</span> var.
                             <a href="<?= url('/teams/invitations') ?>" class="underline hover:text-blue-900">Görüntülemek için tıklayın</a>
                         </div>
                     </div>
