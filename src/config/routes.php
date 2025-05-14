@@ -56,6 +56,16 @@ $router->add('/admin/reject-registration', 'AdminController', 'rejectRegistratio
 $router->add('/admin/tournaments/edit', 'AdminController', 'editTournament', 'GET');
 $router->add('/admin/update-tournament', 'AdminController', 'updateTournament', 'POST');
 
+// Team Listings (Job Postings)
+$router->add('/teams/listings', 'TeamListingController', 'index', 'GET');
+$router->add('/teams/listings/create', 'TeamListingController', 'createForm', 'GET');
+$router->add('/teams/listings/create', 'TeamListingController', 'create', 'POST');
+$router->add('/teams/listings/view', 'TeamListingController', 'view', 'GET');
+$router->add('/teams/listings/edit', 'TeamListingController', 'editForm', 'GET');
+$router->add('/teams/listings/update', 'TeamListingController', 'update', 'POST');
+$router->add('/teams/listings/delete', 'TeamListingController', 'delete', 'POST');
+$router->add('/teams/listings/my-listings', 'TeamListingController', 'myListings', 'GET');
+
 
 
 // Test rotası - ihtiyaç yoksa kaldırılabilir
