@@ -165,6 +165,7 @@ class UserController {
    
 
 // Profil sayfası
+// Profil sayfası
 public function profile() {
     global $database;
     
@@ -190,7 +191,7 @@ public function profile() {
     
     // Kullanıcının turnuvalarını getir (takımları üzerinden)
     $tournaments = $database->fetchAll(
-        "SELECT DISTINCT t.*, g.name as game_name
+        "SELECT DISTINCT t.*, g.name as game_name, g.slug as game_slug
         FROM tournaments t
         JOIN tournament_teams tt ON t.id = tt.tournament_id
         JOIN teams tm ON tt.team_id = tm.id
@@ -201,12 +202,34 @@ public function profile() {
         [$userId]
     );
     
+    // Bekleyen davetleri kontrol et
+    $pendingInvitationCount = 0;
+    
+    // team_invitations tablosu var mı kontrol et (yeni metodu kullanarak)
+    try {
+        $userEmail = Session::get('user_email');
+        
+        // Database sınıfındaki yeni metodu kullanın
+        if ($database->tableExists('team_invitations')) {
+            $pendingInvitations = $database->fetch(
+                "SELECT COUNT(*) as count FROM team_invitations 
+                WHERE recipient_email = ? AND status = 'pending' AND expires_at > NOW()",
+                [$userEmail]
+            );
+            
+            $pendingInvitationCount = $pendingInvitations ? $pendingInvitations['count'] : 0;
+        }
+    } catch (Exception $e) {
+        // Hata durumunda sessizce devam et
+    }
+    
     // Görünüm verilerini hazırla
     $data = [
         'pageTitle' => 'Profilim',
         'user' => $user,
         'teams' => $teams,
-        'tournaments' => $tournaments
+        'tournaments' => $tournaments,
+        'pendingInvitationCount' => $pendingInvitationCount
     ];
     
     // Profil görünümünü göster
@@ -217,7 +240,6 @@ public function profile() {
     view('layouts/main', ['content' => $content]);
 }
 
-// Profil güncelleme
 // Profil güncelleme
 public function updateProfile() {
     global $database;

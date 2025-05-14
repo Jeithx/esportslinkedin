@@ -198,3 +198,31 @@
         }
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Ana oyun seçimi için tüm radio etiketleri
+    const gameOptions = document.querySelectorAll('[name="main_game"]');
+    
+    // Her etiket için olay dinleyicisi ekle
+    gameOptions.forEach(option => {
+        const container = option.closest('.relative');
+        
+        container.addEventListener('click', function() {
+            // Önce tüm seçimleri temizle
+            gameOptions.forEach(radio => {
+                const parent = radio.closest('.relative').querySelector('.p-3');
+                parent.classList.remove('border-indigo-500', 'bg-indigo-50');
+                parent.classList.add('border-gray-200');
+                radio.checked = false;
+            });
+            
+            // Tıklanan öğeyi seç
+            option.checked = true;
+            const selectedDiv = container.querySelector('.p-3');
+            selectedDiv.classList.remove('border-gray-200');
+            selectedDiv.classList.add('border-indigo-500', 'bg-indigo-50');
+        });
+    });
+});
+</script>
+

@@ -1,7 +1,10 @@
 -- Admin kullanıcısı (şifre: admin123)
 INSERT INTO `users` (`username`, `email`, `password`, `role`, `full_name`) VALUES
-('admin', 'admin@boscaler.com', '$2y$12$QGZOt0UYy6Gl8eMfMcJ.7.KRGkGbaDoSKCyNr9C7cUlw7OfBPrk3a', 'admin', 'Site Yöneticisi');
+('admin', 'admin@boscaler.com', '$2a$12$TgdwNo/rO/jzx7p7zhjT5eTlAg37VE6MtZtDAWhPCBYGqgn0.zMTm', 'admin', 'Site Yöneticisi');
 
--- Normal kullanıcı (şifre: test123)
+-- Normal Kullanıcı (şifre: testpass/testpass2)
 INSERT INTO `users` (`username`, `email`, `password`, `role`, `full_name`) VALUES
-('testuser', 'test@boscaler.com', '$2y$12$BnKQV0Z1KR9QiX9QN1MqSeIh1ztk1eZ.ftxZOBOKLYQzOTZEd2v/e', 'user', 'Test Kullanıcı');
+('testuser', 'test@boscaler.com', '$2a$12$en27fJHs6sHjObHMedzIpOqzIrz6CsBRaEOmlayVluTHaNNpuDvu6', 'user', 'Test Kullanıcı');
+
+INSERT INTO `users` (`username`, `email`, `password`, `role`, `full_name`) VALUES
+('testuser2', 'test2@boscaler.com', '$2a$12$A36z2WNg6.7jSl5GcGbE3esX7v.xBWxY7GPpVml6nQmc3s0j81h9W', 'user', 'Test Kullanıcı2');

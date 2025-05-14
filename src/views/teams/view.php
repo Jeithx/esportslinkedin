@@ -43,6 +43,33 @@
     <?php endif; ?>
 </div>
 
+<?php if ($isCaptain): ?>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h3 class="text-lg font-semibold mb-4">Takıma Üye Davet Et</h3>
+        
+        <form action="<?= url('/teams/invite') ?>" method="post" class="space-y-4">
+            <input type="hidden" name="team_id" value="<?= $team['id'] ?>">
+            
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Davet Edilecek E-posta:</label>
+                <div class="flex">
+                    <input type="email" name="email" id="email" class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700 transition-colors">
+                        Davet Gönder
+                    </button>
+                </div>
+                <p class="mt-1 text-sm text-gray-500">Davet gönderilecek kişinin e-posta adresini girin.</p>
+            </div>
+        </form>
+        
+        <div class="mt-4">
+            <a href="<?= url('/teams/pending-invitations?team_id=' . $team['id']) ?>" class="text-sm text-indigo-600 hover:text-indigo-800">
+                Bekleyen Davetleri Görüntüle →
+            </a>
+        </div>
+    </div>
+<?php endif; ?>
+
 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
     <div class="flex border-b border-gray-200">
         <button class="tab-nav-item active px-6 py-3 font-medium text-gray-700 border-b-2 border-indigo-600 focus:outline-none" data-tab="members">Üyeler</button>

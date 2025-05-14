@@ -5,6 +5,12 @@ class Database {
     public function __construct(PDO $pdo) {
         $this->pdo = $pdo;
     }
+    // Tablo var mı kontrol etme
+    public function tableExists($table) {
+        $query = $this->pdo->prepare("SHOW TABLES LIKE ?");
+        $query->execute([$table]);
+        return $query->rowCount() > 0;
+    }
     
     // Sorgu çalıştırma ve sonuçları getirme
     public function query($query, $params = []) {
