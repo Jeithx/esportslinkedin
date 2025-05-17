@@ -52,9 +52,6 @@ $router->add('/applications/reject', 'ApplicationController', 'reject', 'POST');
 $router->add('/applications/withdraw', 'ApplicationController', 'withdraw', 'POST');
 
 
-
-
-
 // Admin paneli
 $router->add('/admin', 'AdminController', 'index', 'GET');
 $router->add('/admin/tournaments', 'AdminController', 'tournaments', 'GET');
@@ -82,12 +79,11 @@ $router->add('/teams/listings/update', 'TeamListingController', 'update', 'POST'
 $router->add('/teams/listings/delete', 'TeamListingController', 'delete', 'POST');
 $router->add('/teams/listings/my-listings', 'TeamListingController', 'myListings', 'GET');
 
-// src/config/routes.php dosyasına ekleyin
 // Bildirimler
 $router->add('/notifications/mark-as-read', 'NotificationController', 'markAsRead', 'POST');
 $router->add('/notifications/mark-all-as-read', 'NotificationController', 'markAllAsRead', 'POST');
 $router->add('/notifications/count', 'NotificationController', 'count', 'GET');
 
 
-// Test rotası - ihtiyaç yoksa kaldırılabilir
+// Test rotası
 // $router->add('/test', 'HomeController', 'test', 'GET');

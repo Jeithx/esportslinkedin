@@ -105,13 +105,18 @@
                             </div>
                             
                             <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between">
-                                <a href="<?= url('/teams/view?id=' . $application['team_id']) ?>" class="text-indigo-600 hover:text-indigo-800">
-                                    Takımı Görüntüle
-                                </a>
+                                <?php if (isset($application['team_id']) && !empty($application['team_id'])): ?>
+                                    <a href="<?= url('/teams/view?id=' . $application['team_id']) ?>" class="text-indigo-600 hover:text-indigo-800">
+                                        Takımı Görüntüle
+                                    </a>
+                                <?php else: ?>
+                                    <span></span> <!-- Takım ID yoksa boş bir element görüntüle -->
+                                <?php endif; ?>
+                                
                                 <a href="<?= url('/teams/listings/view?id=' . $application['listing_id']) ?>" class="text-indigo-600 hover:text-indigo-800">
                                     İlanı Görüntüle
                                 </a>
-                            </div>
+                            </div>  
                         </div>
                     <?php endforeach; ?>
                 </div>

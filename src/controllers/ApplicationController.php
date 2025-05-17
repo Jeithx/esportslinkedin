@@ -1,4 +1,7 @@
 <?php
+// Notification sınıfını dahil et
+require_once __DIR__ . '/../helpers/notifications.php';
+
 class ApplicationController {
     // Apply to a listing
     public function apply() {
