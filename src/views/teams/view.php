@@ -225,6 +225,24 @@
                     </div>
                 </form>
             </div>
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                    <h4 class="text-lg font-semibold mb-4">Oyuncu İlanları</h4>
+                    <p class="text-gray-600 mb-4">Takımınız için oyuncu ilanları oluşturun ve başvuruları yönetin.</p>
+                    <div class="flex gap-3">
+                        <a href="<?= url('/teams/listings/create') ?>" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Yeni İlan Oluştur
+                        </a>
+                        <a href="<?= url('/teams/listings/my-listings') ?>" class="inline-flex items-center px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            İlanlarımı Yönet
+                        </a>
+                    </div>
+                </div>
         </div>
     <?php endif; ?>
 </div>
