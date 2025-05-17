@@ -100,6 +100,114 @@ document.addEventListener('DOMContentLoaded', function() {
         
         field.classList.remove('is-invalid');
     }
+
+    // public/assets/js/main.js dosyasına ekleyin
+// Bildirim işlemleri
+const notificationBell = document.getElementById('notification-bell');
+const notificationDropdown = document.getElementById('notification-dropdown');
+const markAllReadBtn = document.getElementById('mark-all-read');
+
+if (notificationBell && notificationDropdown) {
+    // Bildirim menüsünü aç/kapat
+    notificationBell.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        notificationDropdown.classList.toggle('hidden');
+    });
+    
+    // Dışarı tıklayınca kapat
+    document.addEventListener('click', function(event) {
+        if (!notificationDropdown.contains(event.target) && !notificationBell.contains(event.target)) {
+            notificationDropdown.classList.add('hidden');
+        }
+    });
+    
+    // Bildirime tıklayınca okundu işaretle
+    const notificationItems = document.querySelectorAll('.notification-list a');
+    notificationItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            const notificationId = this.getAttribute('data-notification-id');
+            markNotificationAsRead(notificationId);
+        });
+    });
+    
+    // Tümünü okundu işaretle
+    if (markAllReadBtn) {
+        markAllReadBtn.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            markAllNotificationsAsRead();
+        });
+    }
+}
+
+// Bildirimi okundu olarak işaretle
+function markNotificationAsRead(notificationId) {
+    fetch('/notifications/mark-as-read', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'notification_id=' + notificationId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Bildirim sayısını güncelle
+            updateNotificationCount();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// Tüm bildirimleri okundu olarak işaretle
+function markAllNotificationsAsRead() {
+    fetch('/notifications/mark-all-as-read', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Bildirim sayısını güncelle ve menüyü yenile
+            updateNotificationCount();
+            location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+// Bildirim sayısını güncelle
+function updateNotificationCount() {
+    fetch('/notifications/count')
+    .then(response => response.json())
+    .then(data => {
+        const countBadge = notificationBell.querySelector('span');
+        if (data.count > 0) {
+            if (countBadge) {
+                countBadge.textContent = data.count > 9 ? '9+' : data.count;
+            } else {
+                const newBadge = document.createElement('span');
+                newBadge.className = 'absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center';
+                newBadge.textContent = data.count > 9 ? '9+' : data.count;
+                notificationBell.appendChild(newBadge);
+            }
+        } else {
+            if (countBadge) {
+                countBadge.remove();
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
     // // Şifre görünürlüğünü aç/kapat
     // function togglePasswordVisibility(inputId) {
     //     const passwordInput = document.getElementById(inputId);

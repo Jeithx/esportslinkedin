@@ -36,6 +36,22 @@ $router->add('/logout', 'UserController', 'logout', 'GET');
 $router->add('/profile', 'UserController', 'profile', 'GET');
 $router->add('/profile/update', 'UserController', 'updateProfile', 'POST');
 
+// Player Profiles
+$router->add('/player/profile', 'PlayerController', 'profile', 'GET');
+$router->add('/player/profile/update', 'PlayerController', 'updateProfile', 'POST');
+$router->add('/player/profile/create', 'PlayerController', 'createProfileForm', 'GET');
+$router->add('/player/profile/create', 'PlayerController', 'createProfile', 'POST');
+
+
+// Applications
+$router->add('/applications/apply', 'ApplicationController', 'apply', 'POST');
+$router->add('/applications/my-applications', 'ApplicationController', 'myApplications', 'GET');
+$router->add('/applications/team-applications', 'ApplicationController', 'teamApplications', 'GET');
+$router->add('/applications/accept', 'ApplicationController', 'accept', 'POST');
+$router->add('/applications/reject', 'ApplicationController', 'reject', 'POST');
+$router->add('/applications/withdraw', 'ApplicationController', 'withdraw', 'POST');
+
+
 
 
 
@@ -66,6 +82,11 @@ $router->add('/teams/listings/update', 'TeamListingController', 'update', 'POST'
 $router->add('/teams/listings/delete', 'TeamListingController', 'delete', 'POST');
 $router->add('/teams/listings/my-listings', 'TeamListingController', 'myListings', 'GET');
 
+// src/config/routes.php dosyasına ekleyin
+// Bildirimler
+$router->add('/notifications/mark-as-read', 'NotificationController', 'markAsRead', 'POST');
+$router->add('/notifications/mark-all-as-read', 'NotificationController', 'markAllAsRead', 'POST');
+$router->add('/notifications/count', 'NotificationController', 'count', 'GET');
 
 
 // Test rotası - ihtiyaç yoksa kaldırılabilir

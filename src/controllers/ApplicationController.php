@@ -220,9 +220,9 @@ class ApplicationController {
         // Get application details
         $application = $database->fetch(
             "SELECT la.*, tl.team_id 
-             FROM listing_applications la
-             JOIN team_listings tl ON la.listing_id = tl.id
-             WHERE la.id = ?",
+            FROM listing_applications la
+            JOIN team_listings tl ON la.listing_id = tl.id
+            WHERE la.id = ?",
             [$applicationId]
         );
         
@@ -232,11 +232,17 @@ class ApplicationController {
             return;
         }
         
+        // Get team details for notification
+        $team = $database->fetch(
+            "SELECT * FROM teams WHERE id = ?",
+            [$application['team_id']]
+        );
+        
         // Check if user is the team captain
         $userId = Session::get('user_id');
         $isCaptain = $database->fetch(
             "SELECT * FROM team_members 
-             WHERE team_id = ? AND user_id = ? AND role = 'captain'",
+            WHERE team_id = ? AND user_id = ? AND role = 'captain'",
             [$application['team_id'], $userId]
         );
         
@@ -273,6 +279,14 @@ class ApplicationController {
                 );
             }
             
+            // Başvuru kabul edildi, bildirim gönder
+            Notification::create(
+                $application['user_id'],
+                'Başvurunuz Kabul Edildi',
+                $team['name'] . ' takımına yaptığınız başvuru kabul edildi. Takıma hoş geldiniz!',
+                '/teams/view?id=' . $application['team_id']
+            );
+            
             // Commit transaction
             $database->commit();
             
@@ -286,7 +300,6 @@ class ApplicationController {
         redirect('/applications/team-applications?team_id=' . $application['team_id']);
     }
     
-    // Reject an application
     public function reject() {
         global $database;
         
@@ -305,9 +318,9 @@ class ApplicationController {
         // Get application details
         $application = $database->fetch(
             "SELECT la.*, tl.team_id 
-             FROM listing_applications la
-             JOIN team_listings tl ON la.listing_id = tl.id
-             WHERE la.id = ?",
+            FROM listing_applications la
+            JOIN team_listings tl ON la.listing_id = tl.id
+            WHERE la.id = ?",
             [$applicationId]
         );
         
@@ -317,11 +330,17 @@ class ApplicationController {
             return;
         }
         
+        // Get team details for notification
+        $team = $database->fetch(
+            "SELECT * FROM teams WHERE id = ?",
+            [$application['team_id']]
+        );
+        
         // Check if user is the team captain
         $userId = Session::get('user_id');
         $isCaptain = $database->fetch(
             "SELECT * FROM team_members 
-             WHERE team_id = ? AND user_id = ? AND role = 'captain'",
+            WHERE team_id = ? AND user_id = ? AND role = 'captain'",
             [$application['team_id'], $userId]
         );
         
@@ -338,6 +357,14 @@ class ApplicationController {
         );
         
         if ($result) {
+            // Başvuru reddedildi, bildirim gönder
+            Notification::create(
+                $application['user_id'],
+                'Başvurunuz Reddedildi',
+                $team['name'] . ' takımına yaptığınız başvuru reddedildi.',
+                '/applications/my-applications'
+            );
+            
             Session::setFlash('success', 'Başvuru reddedildi.');
         } else {
             Session::setFlash('error', 'Başvuru reddedilirken bir hata oluştu.');

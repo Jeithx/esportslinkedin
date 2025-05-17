@@ -97,7 +97,43 @@
         <div class="flex border-b border-gray-200 overflow-x-auto">
             <button class="tab-nav-item active px-6 py-3 font-medium text-gray-700 border-b-2 border-indigo-600 focus:outline-none" data-tab="teams">Takımlarım</button>
             <button class="tab-nav-item px-6 py-3 font-medium text-gray-500 hover:text-gray-700 focus:outline-none" data-tab="tournaments">Turnuvalarım</button>
+            <button class="tab-nav-item px-6 py-3 font-medium text-gray-500 hover:text-gray-700 focus:outline-none" data-tab="applications">Başvurularım</button>
             <button class="tab-nav-item px-6 py-3 font-medium text-gray-500 hover:text-gray-700 focus:outline-none" data-tab="settings">Profil Ayarları</button>
+        </div>
+
+        <!-- Başvurularım Sekmesi (Yeni) -->
+        <div class="tab-content hidden p-6" id="applications-tab">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-800">Takım Başvurularım</h3>
+                <a href="<?= url('/applications/my-applications') ?>" class="inline-flex items-center px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    Tüm Başvurularım
+                </a>
+            </div>
+            
+            <div class="bg-indigo-50 rounded-xl p-10 text-center border border-indigo-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-indigo-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Başvurularınızı yönetin</h3>
+                <p class="text-gray-600 mb-6">Takım ilanlarına yaptığınız başvuruları görüntüleyin ve yönetin.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="<?= url('/teams/listings') ?>" class="inline-flex items-center px-5 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        İlanlara Göz At
+                    </a>
+                    <a href="<?= url('/player/profile') ?>" class="inline-flex items-center px-5 py-3 border border-indigo-600 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        Oyuncu Profillerimi Yönet
+                    </a>
+                </div>
+            </div>
         </div>
         
         <!-- Takımlarım Sekmesi -->
@@ -364,6 +400,17 @@
                     </button>
                 </div>
             </form>
+
+                <div class="mt-6 border-t border-gray-200 pt-6">
+                    <h4 class="font-semibold text-lg mb-4 text-indigo-800">Oyun Profilleri</h4>
+                    <p class="text-gray-600 mb-4">Takım ilanlarına başvurabilmek için oyun profillerinizi oluşturun ve yönetin.</p>
+                    <a href="<?= url('/player/profile') ?>" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        Oyuncu Profillerimi Yönet
+                    </a>
+                </div>
         </div>
     </div>
 </div>
